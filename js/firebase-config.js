@@ -11,13 +11,31 @@ const firebaseConfig = {
   appId: "1:404862252936:web:3dc93ba393b67504d96c3d",
   measurementId: "G-YHWXJEPJ1J"
 };
+
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-firebase.initializeApp(firebaseConfig);
+
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("✅ Firebase initialized successfully");
+} catch (error) {
+    console.error("❌ Firebase init error:", error);
+    alert("Firebase connection failed. Check your config in firebase-config.js");
+}
+
 const db = firebase.database();
 
-/* ---- Admin Credentials (change if you want) ---- */
+// Test the connection
+db.ref(".info/connected").on("value", function(snap) {
+    if (snap.val() === true) {
+        console.log("✅ Connected to Firebase Database");
+    } else {
+        console.log("⏳ Not connected to Firebase Database yet...");
+    }
+});
+
+/* ---- Admin Credentials ---- */
 const ADMIN_EMAIL = "admin@meatlogic.com";
 const ADMIN_PASSWORD = "admin123";
 
@@ -39,6 +57,7 @@ function formatDate(iso) {
 function showToast(msg) {
     const t = document.getElementById("toast");
     const m = document.getElementById("toast-msg");
+    if (!t || !m) return;
     m.textContent = msg;
     t.classList.remove("hidden");
     t.classList.add("show");
@@ -67,7 +86,7 @@ function compressImage(file, maxW, quality) {
     });
 }
 
-/* ---- Initialize Default Products (run once) ---- */
+/* ---- Default Products Loader ---- */
 function loadDefaultProducts() {
     const defaults = {
         p1:  { name: "Beef Sirloin",     category: "beef",      price: 380, unit: "per kg",   emoji: "🥩", onlineStock: 15 },
