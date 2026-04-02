@@ -12,7 +12,7 @@
     <!-- ===== NAVBAR ===== -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="nav-brand">
+            <div class="nav-brand" onclick="showTab('home')" style="cursor:pointer;">
                 <span class="brand-icon-sm">🥩</span>
                 <div>
                     <span class="brand-name">MeatLogic</span>
@@ -20,11 +20,15 @@
                 </div>
             </div>
             <div class="nav-links" id="nav-links">
-                <a href="#" class="nav-link active" data-tab="shop" onclick="showTab('shop',this)">🏪 Shop</a>
+                <a href="#" class="nav-link active" data-tab="home" onclick="showTab('home',this)">🏠 Home</a>
+                <a href="#" class="nav-link" data-tab="shop" onclick="showTab('shop',this)">🏪 Shop</a>
                 <a href="#" class="nav-link" data-tab="cart" onclick="showTab('cart',this)">
                     🛒 Cart <span class="cart-count" id="cart-count">0</span>
                 </a>
-                <a href="#" class="nav-link" data-tab="track" onclick="showTab('track',this)">📦 Track Order</a>
+                <a href="#" class="nav-link" data-tab="myorders" onclick="showTab('myorders',this)" id="nav-myorders" style="display:none;">📦 My Orders</a>
+                <a href="#" class="nav-link" data-tab="track" onclick="showTab('track',this)">📋 Track</a>
+                <a href="#" class="nav-link" data-tab="auth" onclick="showTab('auth',this)" id="nav-auth">👤 Login</a>
+                <a href="#" class="nav-link" data-tab="profile" onclick="showTab('profile',this)" id="nav-profile" style="display:none;">👤 <span id="nav-username">Account</span></a>
             </div>
             <button class="hamburger" onclick="toggleMobile()">
                 <span></span><span></span><span></span>
@@ -34,17 +38,33 @@
 
     <main class="page-main">
 
-        <!-- ===== SHOP TAB ===== -->
-        <section id="tab-shop" class="page-tab active">
+        <!-- ===== HOME TAB ===== -->
+        <section id="tab-home" class="page-tab active">
             <div class="hero">
                 <div class="hero-shapes"><div class="hs hs1"></div><div class="hs hs2"></div></div>
                 <div class="hero-inner">
                     <span class="hero-badge">🔥 Fresh Daily — Order Online</span>
                     <h1>Premium Fresh Meat,<br><span class="text-gradient">Delivered to You</span></h1>
                     <p>Skip the market rush. Guaranteed freshness, transparent stock, reliable delivery via Lalamove or LBC.</p>
+                    <div class="hero-btns">
+                        <button class="btn btn-primary btn-lg" onclick="showTab('shop')">🏪 Start Shopping</button>
+                        <button class="btn btn-outline btn-lg" onclick="showTab('auth')">👤 Create Account</button>
+                    </div>
                 </div>
             </div>
+            <div class="container">
+                <h2 class="sec-title">How It <span class="text-gradient">Works</span></h2>
+                <div class="how-grid">
+                    <div class="how-card"><div class="how-ico">📱</div><h3>Browse & Order</h3><p>View today's available meat with live stock counts.</p></div>
+                    <div class="how-card"><div class="how-ico">💳</div><h3>Pay via GCash</h3><p>Send payment and upload your receipt screenshot.</p></div>
+                    <div class="how-card"><div class="how-ico">✅</div><h3>Get Confirmed</h3><p>Admin verifies payment and prepares your order.</p></div>
+                    <div class="how-card"><div class="how-ico">🚚</div><h3>Fast Delivery</h3><p>Same-day via Lalamove or shipped via LBC.</p></div>
+                </div>
+            </div>
+        </section>
 
+        <!-- ===== SHOP TAB ===== -->
+        <section id="tab-shop" class="page-tab">
             <div class="container">
                 <h2 class="sec-title">Today's Fresh Selection</h2>
                 <div class="cat-bar">
@@ -77,6 +97,11 @@
                     </div>
                     <div class="checkout-panel">
                         <h3>Checkout</h3>
+
+                        <!-- Login prompt if not logged in -->
+                        <div id="checkout-login-prompt" class="info-banner">
+                            <p>💡 <strong>Have an account?</strong> <a href="#" onclick="showTab('auth')">Log in</a> to auto-fill your details and track orders easily.</p>
+                        </div>
 
                         <div class="fg">
                             <label>Full Name <span class="req">*</span></label>
@@ -149,6 +174,22 @@
             </div>
         </section>
 
+        <!-- ===== MY ORDERS TAB (Logged-in users) ===== -->
+        <section id="tab-myorders" class="page-tab">
+            <div class="container">
+                <h2 class="sec-title">My Orders</h2>
+                <p class="sec-desc">View all your orders and their status.</p>
+                <div id="myorders-list">
+                    <div class="empty-box">
+                        <div class="empty-ico">📦</div>
+                        <h3>No orders yet</h3>
+                        <p>Your order history will appear here.</p>
+                        <button class="btn btn-primary" onclick="showTab('shop')">Start Shopping</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ===== TRACK TAB ===== -->
         <section id="tab-track" class="page-tab">
             <div class="container narrow">
@@ -159,6 +200,125 @@
                     <button class="btn btn-primary" onclick="trackOrder()">Track</button>
                 </div>
                 <div id="track-result"></div>
+            </div>
+        </section>
+
+        <!-- ===== AUTH TAB (Login/Register) ===== -->
+        <section id="tab-auth" class="page-tab">
+            <div class="container narrow">
+                <div class="auth-card">
+                    <!-- Toggle between Login and Register -->
+                    <div class="auth-tabs">
+                        <button class="auth-tab-btn active" id="btn-login-tab" onclick="showAuthForm('login')">Log In</button>
+                        <button class="auth-tab-btn" id="btn-register-tab" onclick="showAuthForm('register')">Register</button>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <div id="form-login" class="auth-form-section">
+                        <div class="auth-header">
+                            <div class="auth-icon">🥩</div>
+                            <h2>Welcome Back!</h2>
+                            <p>Log in to your MeatLogic account</p>
+                        </div>
+                        <div id="login-error" class="alert-err hidden"></div>
+                        <form onsubmit="doCustomerLogin(event)">
+                            <div class="fg">
+                                <label>Email Address</label>
+                                <input type="email" id="login-email" class="fi" placeholder="you@example.com" required>
+                            </div>
+                            <div class="fg">
+                                <label>Password</label>
+                                <input type="password" id="login-pass" class="fi" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full btn-lg">Log In</button>
+                        </form>
+                        <p class="auth-switch">Don't have an account? <a href="#" onclick="showAuthForm('register')">Register here</a></p>
+                    </div>
+
+                    <!-- REGISTER FORM -->
+                    <div id="form-register" class="auth-form-section hidden">
+                        <div class="auth-header">
+                            <div class="auth-icon">🥩</div>
+                            <h2>Create Account</h2>
+                            <p>Sign up to order and track your meat deliveries</p>
+                        </div>
+                        <div id="register-error" class="alert-err hidden"></div>
+                        <div id="register-success" class="alert-suc hidden"></div>
+                        <form onsubmit="doCustomerRegister(event)">
+                            <div class="fg-row">
+                                <div class="fg">
+                                    <label>First Name <span class="req">*</span></label>
+                                    <input type="text" id="reg-fname" class="fi" placeholder="Juan" required>
+                                </div>
+                                <div class="fg">
+                                    <label>Last Name <span class="req">*</span></label>
+                                    <input type="text" id="reg-lname" class="fi" placeholder="Dela Cruz" required>
+                                </div>
+                            </div>
+                            <div class="fg">
+                                <label>Email Address <span class="req">*</span></label>
+                                <input type="email" id="reg-email" class="fi" placeholder="you@example.com" required>
+                            </div>
+                            <div class="fg">
+                                <label>Phone Number <span class="req">*</span></label>
+                                <input type="tel" id="reg-phone" class="fi" placeholder="09XX XXX XXXX" required>
+                            </div>
+                            <div class="fg">
+                                <label>Delivery Address <span class="req">*</span></label>
+                                <textarea id="reg-address" class="fi" rows="2" placeholder="Full address including barangay, city" required></textarea>
+                            </div>
+                            <div class="fg">
+                                <label>Password <span class="req">*</span></label>
+                                <input type="password" id="reg-pass" class="fi" placeholder="Min. 6 characters" required minlength="6">
+                            </div>
+                            <div class="fg">
+                                <label>Confirm Password <span class="req">*</span></label>
+                                <input type="password" id="reg-pass2" class="fi" placeholder="Re-enter password" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full btn-lg">Create Account</button>
+                        </form>
+                        <p class="auth-switch">Already have an account? <a href="#" onclick="showAuthForm('login')">Log in here</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROFILE TAB (Logged-in user) ===== -->
+        <section id="tab-profile" class="page-tab">
+            <div class="container narrow">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar">J</div>
+                        <h2 id="profile-fullname">Juan Dela Cruz</h2>
+                        <p id="profile-email-display">juan@email.com</p>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3>📍 Saved Delivery Address</h3>
+                        <p class="sec-desc">Update your default address so you don't have to type it every time.</p>
+                        <div class="fg">
+                            <label>Full Name</label>
+                            <input type="text" id="prof-name" class="fi" placeholder="Your full name">
+                        </div>
+                        <div class="fg">
+                            <label>Phone Number</label>
+                            <input type="tel" id="prof-phone" class="fi" placeholder="09XX XXX XXXX">
+                        </div>
+                        <div class="fg">
+                            <label>Delivery Address</label>
+                            <textarea id="prof-address" class="fi" rows="3" placeholder="Full delivery address"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveProfile()">💾 Save Address</button>
+                    </div>
+
+                    <div class="profile-section">
+                        <h3>🔑 Account Actions</h3>
+                        <div class="profile-actions">
+                            <button class="btn btn-ghost btn-full" onclick="showTab('myorders')">📦 View My Orders</button>
+                            <button class="btn btn-ghost btn-full" style="color:var(--red-500);" onclick="doCustomerLogout()">🚪 Log Out</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -181,7 +341,25 @@
             <p>Save your Order ID below. You can use it to track your order status.</p>
             <div class="oid-box" id="oid-box"></div>
             <p class="oid-note">📋 Tip: Screenshot this or write it down!</p>
-            <button class="btn btn-primary btn-full" onclick="closeSuccess()">Done</button>
+            <div class="suc-btns">
+                <button class="btn btn-primary" onclick="closeSuccess(); showTab('myorders');" id="suc-btn-orders" style="display:none;">View My Orders</button>
+                <button class="btn btn-primary" onclick="closeSuccess();" id="suc-btn-track">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Confirm Modal -->
+    <div id="modal-cancel" class="modal hidden">
+        <div class="modal-bg" onclick="closeCancelModal()"></div>
+        <div class="modal-box">
+            <div class="mb-head"><h2>Cancel Order?</h2><button class="mb-close" onclick="closeCancelModal()">✕</button></div>
+            <div style="padding:0 24px 24px;">
+                <p style="color:var(--text2);margin-bottom:18px;">Are you sure you want to cancel order <strong id="cancel-order-id"></strong>? This cannot be undone.</p>
+                <div class="mb-actions">
+                    <button class="btn btn-ghost" onclick="closeCancelModal()">Keep Order</button>
+                    <button class="btn btn-sm" style="background:var(--red-500);color:#fff;" onclick="confirmCancelOrder()">Yes, Cancel Order</button>
+                </div>
+            </div>
         </div>
     </div>
 
