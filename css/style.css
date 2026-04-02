@@ -120,7 +120,7 @@ textarea.fi { resize:vertical; }
 /* ====================
    CONTAINERS & SECTIONS
    ==================== */
-.page-main { padding-top:0; }
+.page-main { padding-top:64px; }
 .page-tab { display:none; }
 .page-tab.active { display:block; }
 .container { max-width:1200px; margin:0 auto; padding:40px 24px 60px; }
