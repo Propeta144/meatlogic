@@ -1,45 +1,21 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+/* MEATLOGIC — Firebase Config */
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCjdkZKVjzHdXGQiDsDaCy2x9O6khFYQMA",
-  authDomain: "meatlogic-68c9b.firebaseapp.com",
-  databaseURL: "https://meatlogic-68c9b-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "meatlogic-68c9b",
-  storageBucket: "meatlogic-68c9b.firebasestorage.app",
-  messagingSenderId: "404862252936",
-  appId: "1:404862252936:web:3dc93ba393b67504d96c3d",
-  measurementId: "G-YHWXJEPJ1J"
+var firebaseConfig = {
+    apiKey: "AIzaSyCjdkZKVjzHdXGQiDsDaCy2x9O6khFYQMA",
+    authDomain: "meatlogic-68c9b.firebaseapp.com",
+    databaseURL: "https://meatlogic-68c9b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "meatlogic-68c9b",
+    storageBucket: "meatlogic-68c9b.firebasestorage.app",
+    messagingSenderId: "404862252936",
+    appId: "1:404862252936:web:3dc93ba393b67504d96c3d"
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
 
+var ADMIN_EMAIL = "adminrhon@meatlogic.com";
+var ADMIN_PASSWORD = "adminrhon123";
 
-try {
-    firebase.initializeApp(firebaseConfig);
-    console.log("✅ Firebase initialized successfully");
-} catch (error) {
-    console.error("❌ Firebase init error:", error);
-    alert("Firebase connection failed. Check your config in firebase-config.js");
-}
-
-const db = firebase.database();
-
-// Test the connection
-db.ref(".info/connected").on("value", function(snap) {
-    if (snap.val() === true) {
-        console.log("✅ Connected to Firebase Database");
-    } else {
-        console.log("⏳ Not connected to Firebase Database yet...");
-    }
-});
-
-/* ---- Admin Credentials ---- */
-const ADMIN_EMAIL = "admin@meatlogic.com";
-const ADMIN_PASSWORD = "admin123";
-
-/* ---- Helper Functions ---- */
 function formatCurrency(n) {
     return "₱" + Number(n).toLocaleString("en-PH", {
         minimumFractionDigits: 2,
@@ -55,26 +31,26 @@ function formatDate(iso) {
 }
 
 function showToast(msg) {
-    const t = document.getElementById("toast");
-    const m = document.getElementById("toast-msg");
+    var t = document.getElementById("toast");
+    var m = document.getElementById("toast-msg");
     if (!t || !m) return;
     m.textContent = msg;
     t.classList.remove("hidden");
     t.classList.add("show");
-    setTimeout(() => {
+    setTimeout(function() {
         t.classList.remove("show");
-        setTimeout(() => t.classList.add("hidden"), 300);
+        setTimeout(function() { t.classList.add("hidden"); }, 300);
     }, 3000);
 }
 
 function compressImage(file, maxW, quality) {
-    return new Promise(resolve => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            const img = new Image();
-            img.onload = () => {
-                const c = document.createElement("canvas");
-                let w = img.width, h = img.height;
+    return new Promise(function(resolve) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = new Image();
+            img.onload = function() {
+                var c = document.createElement("canvas");
+                var w = img.width, h = img.height;
                 if (w > maxW) { h = (maxW / w) * h; w = maxW; }
                 c.width = w; c.height = h;
                 c.getContext("2d").drawImage(img, 0, 0, w, h);
@@ -86,9 +62,8 @@ function compressImage(file, maxW, quality) {
     });
 }
 
-/* ---- Default Products Loader ---- */
 function loadDefaultProducts() {
-    const defaults = {
+    var defaults = {
         p1:  { name: "Beef Sirloin",     category: "beef",      price: 380, unit: "per kg",   emoji: "🥩", onlineStock: 15 },
         p2:  { name: "Beef Short Ribs",  category: "beef",      price: 350, unit: "per kg",   emoji: "🥩", onlineStock: 10 },
         p3:  { name: "Beef Brisket",     category: "beef",      price: 320, unit: "per kg",   emoji: "🥩", onlineStock: 12 },
