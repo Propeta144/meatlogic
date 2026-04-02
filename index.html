@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeatLogic — Arnel's Karne atbp.</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon-sm">🥩</span>
+                <div>
+                    <span class="brand-name">MeatLogic</span>
+                    <span class="brand-sub">Arnel's Karne atbp.</span>
+                </div>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <a href="#" class="nav-link active" data-tab="shop" onclick="showTab('shop',this)">🏪 Shop</a>
+                <a href="#" class="nav-link" data-tab="cart" onclick="showTab('cart',this)">
+                    🛒 Cart <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <a href="#" class="nav-link" data-tab="track" onclick="showTab('track',this)">📦 Track Order</a>
+            </div>
+            <button class="hamburger" onclick="toggleMobile()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="page-main">
+
+        <!-- ===== SHOP TAB ===== -->
+        <section id="tab-shop" class="page-tab active">
+            <div class="hero">
+                <div class="hero-shapes"><div class="hs hs1"></div><div class="hs hs2"></div></div>
+                <div class="hero-inner">
+                    <span class="hero-badge">🔥 Fresh Daily — Order Online</span>
+                    <h1>Premium Fresh Meat,<br><span class="text-gradient">Delivered to You</span></h1>
+                    <p>Skip the market rush. Guaranteed freshness, transparent stock, reliable delivery via Lalamove or LBC.</p>
+                </div>
+            </div>
+
+            <div class="container">
+                <h2 class="sec-title">Today's Fresh Selection</h2>
+                <div class="cat-bar">
+                    <button class="cat-btn active" onclick="filterCat('all',this)">All</button>
+                    <button class="cat-btn" onclick="filterCat('beef',this)">🥩 Beef</button>
+                    <button class="cat-btn" onclick="filterCat('pork',this)">🍖 Pork</button>
+                    <button class="cat-btn" onclick="filterCat('chicken',this)">🍗 Chicken</button>
+                    <button class="cat-btn" onclick="filterCat('processed',this)">🌭 Processed</button>
+                </div>
+                <div id="loading" class="loading"><div class="spinner"></div><p>Loading products...</p></div>
+                <div class="grid" id="products-grid"></div>
+            </div>
+        </section>
+
+        <!-- ===== CART TAB ===== -->
+        <section id="tab-cart" class="page-tab">
+            <div class="container">
+                <h2 class="sec-title">Your Cart & Checkout</h2>
+
+                <div id="cart-empty" class="empty-box">
+                    <div class="empty-ico">🛒</div>
+                    <h3>Your cart is empty</h3>
+                    <p>Browse our fresh products and add items to your cart.</p>
+                    <button class="btn btn-primary" onclick="showTab('shop')">Browse Products</button>
+                </div>
+
+                <div id="cart-filled" class="cart-layout hidden">
+                    <div>
+                        <div id="cart-items"></div>
+                    </div>
+                    <div class="checkout-panel">
+                        <h3>Checkout</h3>
+
+                        <div class="fg">
+                            <label>Full Name <span class="req">*</span></label>
+                            <input type="text" id="c-name" class="fi" placeholder="Juan Dela Cruz" required>
+                        </div>
+                        <div class="fg">
+                            <label>Phone Number <span class="req">*</span></label>
+                            <input type="tel" id="c-phone" class="fi" placeholder="09XX XXX XXXX" required>
+                        </div>
+                        <div class="fg">
+                            <label>Delivery Address <span class="req">*</span></label>
+                            <textarea id="c-address" class="fi" rows="3" placeholder="Full address including barangay, city" required></textarea>
+                        </div>
+
+                        <div class="fg">
+                            <label>Select Courier <span class="req">*</span></label>
+                            <div class="courier-opts">
+                                <label class="co">
+                                    <input type="radio" name="courier" value="Lalamove" checked>
+                                    <div class="co-card">
+                                        <span class="co-ico">🏍️</span>
+                                        <div><strong>Lalamove</strong><small>Same-day chilled delivery</small></div>
+                                    </div>
+                                </label>
+                                <label class="co">
+                                    <input type="radio" name="courier" value="LBC">
+                                    <div class="co-card">
+                                        <span class="co-ico">📦</span>
+                                        <div><strong>LBC</strong><small>Processed goods shipping</small></div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="gcash-box">
+                            <div class="gcash-top">💙 GCash Payment</div>
+                            <div class="gcash-mid">
+                                <p>Send payment to:</p>
+                                <div class="gcash-num"><strong>0917 123 4567</strong><small>Arnel D.</small></div>
+                            </div>
+                            <div class="gcash-bot">
+                                <label>Upload Receipt Screenshot <span class="req">*</span></label>
+                                <div class="upload-zone" id="upload-zone" onclick="document.getElementById('receipt-file').click()">
+                                    <input type="file" id="receipt-file" accept="image/*" onchange="onReceipt(event)" hidden>
+                                    <div id="upload-ph">
+                                        <span>📤</span><p>Click to upload</p><small>PNG, JPG up to 5MB</small>
+                                    </div>
+                                    <div id="upload-pv" class="hidden">
+                                        <img id="receipt-img" src="" alt="Receipt">
+                                        <button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation();clearReceipt()">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="summary-box">
+                            <h4>Order Summary</h4>
+                            <div id="summary-lines"></div>
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span id="summary-total">₱0.00</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-full btn-lg" id="btn-place" onclick="placeOrder()">
+                            Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TRACK TAB ===== -->
+        <section id="tab-track" class="page-tab">
+            <div class="container narrow">
+                <h2 class="sec-title">Track Your Order</h2>
+                <p class="sec-desc">Enter the Order ID you received after checkout.</p>
+                <div class="track-row">
+                    <input type="text" id="track-id" class="fi" placeholder="e.g. ORD-12345678">
+                    <button class="btn btn-primary" onclick="trackOrder()">Track</button>
+                </div>
+                <div id="track-result"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 MeatLogic — Arnel's Karne atbp. All rights reserved.</p>
+        <a href="admin.html" class="admin-gate">🔒 Admin Access</a>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"><span id="toast-msg"></span></div>
+
+    <!-- Success Modal -->
+    <div id="modal-success" class="modal hidden">
+        <div class="modal-bg" onclick="closeSuccess()"></div>
+        <div class="modal-box success-modal">
+            <div class="suc-ico">✅</div>
+            <h2>Order Placed!</h2>
+            <p>Save your Order ID below. You can use it to track your order status.</p>
+            <div class="oid-box" id="oid-box"></div>
+            <p class="oid-note">📋 Tip: Screenshot this or write it down!</p>
+            <button class="btn btn-primary btn-full" onclick="closeSuccess()">Done</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/customer.js"></script>
+</body>
+</html>

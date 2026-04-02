@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeatLogic — Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+    <!-- ===== LOGIN GATE ===== -->
+    <div id="login-gate" class="login-gate">
+        <div class="login-card">
+            <div class="lc-head">
+                <span class="brand-icon-sm">🥩</span>
+                <h2>Admin Login</h2>
+                <p>MeatLogic — Arnel's Karne atbp.</p>
+            </div>
+            <div id="login-err" class="alert-err hidden"></div>
+            <form onsubmit="doLogin(event)">
+                <div class="fg"><label>Email</label><input type="email" id="a-email" class="fi" required placeholder="admin@meatlogic.com"></div>
+                <div class="fg"><label>Password</label><input type="password" id="a-pass" class="fi" required placeholder="••••••••"></div>
+                <button type="submit" class="btn btn-primary btn-full">Log In</button>
+            </form>
+            <a href="index.html" class="back-shop">← Back to Shop</a>
+
+            <div class="demo-box">
+                <small>Demo Credentials</small>
+                <button onclick="document.getElementById('a-email').value='admin@meatlogic.com';document.getElementById('a-pass').value='admin123';" class="demo-fill">Auto-fill Admin</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DASHBOARD (shown after login) ===== -->
+    <div id="admin-app" class="admin-app hidden">
+        <div class="mob-overlay" id="mob-overlay" onclick="closeSB()"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sb-head">
+                <span class="brand-icon-sm">🥩</span>
+                <div><span class="brand-name">MeatLogic</span><span class="brand-sub">Admin Panel</span></div>
+                <button class="sb-close" onclick="closeSB()">��</button>
+            </div>
+            <nav class="sb-nav">
+                <a href="#" class="sb-link active" onclick="aTab('dashboard',this)">📊 Dashboard</a>
+                <a href="#" class="sb-link" onclick="aTab('stock',this)">📦 Stock Management</a>
+                <a href="#" class="sb-link" onclick="aTab('orders',this)">📋 Orders <span class="sb-badge" id="pend-badge">0</span></a>
+                <a href="#" class="sb-link" onclick="aTab('products',this)">🛍️ Products</a>
+            </nav>
+            <div class="sb-foot">
+                <a href="index.html" class="btn btn-ghost btn-full btn-sm">🏪 View Shop</a>
+                <button class="btn btn-ghost btn-full btn-sm" onclick="doLogout()">🚪 Log Out</button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="admin-main">
+            <div class="a-topbar">
+                <button class="ham-btn" onclick="openSB()">☰</button>
+                <h1 id="a-title">Dashboard</h1>
+                <span id="a-date" class="a-date"></span>
+            </div>
+
+            <!-- ---- Dashboard ---- -->
+            <div id="at-dashboard" class="a-tab active">
+                <div class="stats-row">
+                    <div class="st-card"><div class="st-ico bg-red">📋</div><div><small>Today's Orders</small><strong id="s-orders">0</strong></div></div>
+                    <div class="st-card"><div class="st-ico bg-orange">⏳</div><div><small>Pending</small><strong id="s-pending">0</strong></div></div>
+                    <div class="st-card"><div class="st-ico bg-green">💰</div><div><small>Revenue</small><strong id="s-revenue">₱0</strong></div></div>
+                    <div class="st-card"><div class="st-ico bg-blue">📦</div><div><small>Products Online</small><strong id="s-products">0</strong></div></div>
+                </div>
+                <div class="dash-grid">
+                    <div class="d-card"><div class="d-card-head"><h3>Recent Orders</h3></div><div class="d-card-body" id="d-recent"><p class="muted">No orders yet.</p></div></div>
+                    <div class="d-card"><div class="d-card-head"><h3>Low Stock Alert</h3></div><div class="d-card-body" id="d-lowstock"><p class="muted">All stocked.</p></div></div>
+                </div>
+                <div class="init-section" id="init-section">
+                    <p>First time? Load sample products into the database:</p>
+                    <button class="btn btn-primary" onclick="initProducts()">🚀 Load Default Products</button>
+                </div>
+            </div>
+
+            <!-- ---- Stock ---- -->
+            <div id="at-stock" class="a-tab">
+                <div class="tab-head">
+                    <div><h2>Daily Stock Allocation</h2><p>Set online-only stock for each product every morning.</p></div>
+                    <button class="btn btn-primary" onclick="saveStock()">💾 Save All Changes</button>
+                </div>
+                <div class="stock-grid" id="stock-grid"><p class="muted">Loading...</p></div>
+            </div>
+
+            <!-- ---- Orders ---- -->
+            <div id="at-orders" class="a-tab">
+                <div class="tab-head">
+                    <h2>Order Management</h2>
+                    <div class="filter-bar">
+                        <button class="fbtn active" onclick="fOrd('all',this)">All</button>
+                        <button class="fbtn" onclick="fOrd('Pending',this)">Pending</button>
+                        <button class="fbtn" onclick="fOrd('Approved',this)">Approved</button>
+                        <button class="fbtn" onclick="fOrd('Out for Delivery',this)">Delivering</button>
+                        <button class="fbtn" onclick="fOrd('Completed',this)">Completed</button>
+                    </div>
+                </div>
+                <div id="orders-list"><p class="muted">Loading...</p></div>
+            </div>
+
+            <!-- ---- Products ---- -->
+            <div id="at-products" class="a-tab">
+                <div class="tab-head">
+                    <h2>Product Catalog</h2>
+                    <button class="btn btn-primary" onclick="openProductModal()">➕ Add Product</button>
+                </div>
+                <div class="table-wrap">
+                    <table class="dtable">
+                        <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Unit</th><th>Stock</th><th>Actions</th></tr></thead>
+                        <tbody id="prod-tbody"><tr><td colspan="6" class="muted">Loading...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"><span id="toast-msg"></span></div>
+
+    <!-- Product Modal -->
+    <div id="prod-modal" class="modal hidden">
+        <div class="modal-bg" onclick="closeProdModal()"></div>
+        <div class="modal-box">
+            <div class="mb-head"><h2 id="pm-title">Add Product</h2><button class="mb-close" onclick="closeProdModal()">✕</button></div>
+            <form id="prod-form" onsubmit="saveProd(event)">
+                <input type="hidden" id="pm-id">
+                <div class="fg"><label>Name</label><input type="text" id="pm-name" class="fi" required placeholder="e.g. Pork Belly"></div>
+                <div class="fg"><label>Category</label>
+                    <select id="pm-cat" class="fi" required>
+                        <option value="">Select</option>
+                        <option value="beef">🥩 Beef</option>
+                        <option value="pork">🍖 Pork</option>
+                        <option value="chicken">🍗 Chicken</option>
+                        <option value="processed">🌭 Processed</option>
+                    </select>
+                </div>
+                <div class="fg-row">
+                    <div class="fg"><label>Price (₱)</label><input type="number" id="pm-price" class="fi" step="0.01" required></div>
+                    <div class="fg"><label>Unit</label><input type="text" id="pm-unit" class="fi" required placeholder="per kg"></div>
+                </div>
+                <div class="fg"><label>Emoji</label><input type="text" id="pm-emoji" class="fi" maxlength="2" placeholder="🥩"></div>
+                <div class="mb-actions">
+                    <button type="button" class="btn btn-ghost" onclick="closeProdModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="rcpt-modal" class="modal hidden">
+        <div class="modal-bg" onclick="closeRcpt()"></div>
+        <div class="modal-box"><div class="mb-head"><h2>GCash Receipt</h2><button class="mb-close" onclick="closeRcpt()">✕</button></div>
+            <div style="text-align:center;padding:20px;"><img id="rcpt-view" src="" alt="Receipt" style="max-width:100%;border-radius:8px;"></div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
