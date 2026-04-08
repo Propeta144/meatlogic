@@ -1,8 +1,3 @@
-/* ============================================
-   MEATLOGIC v3 — Customer Logic
-   With: Auth, Saved Address, My Orders, Cancel
-   ============================================ */
-
 var allProducts = {};
 var cart = JSON.parse(localStorage.getItem("ml_cart") || "[]");
 var receiptData = null;
