@@ -657,7 +657,6 @@ textarea.fi { resize:vertical; }
 /* Success modal buttons */
 .suc-btns { display:flex; gap:10px; justify-content:center; }
 
-/* ---- Responsive additions ---- */
 @media(max-width:1024px) {
     .how-grid { grid-template-columns:1fr 1fr; }
 }
