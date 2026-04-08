@@ -1,5 +1,3 @@
-/* MEATLOGIC — Firebase Config */
-
 var firebaseConfig = {
     apiKey: "AIzaSyCjdkZKVjzHdXGQiDsDaCy2x9O6khFYQMA",
     authDomain: "meatlogic-68c9b.firebaseapp.com",
