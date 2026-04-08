@@ -1,8 +1,3 @@
-/* ============================================
-   MEATLOGIC v3 — Admin Logic
-   With: Cancelled status, Customer list
-   ============================================ */
-
 var adminProducts = {};
 var adminOrders = {};
 var adminCustomers = {};
