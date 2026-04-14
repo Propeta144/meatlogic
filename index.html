@@ -26,8 +26,7 @@
                     🛒 Cart <span class="cart-count" id="cart-count">0</span>
                 </a>
                 <a href="#" class="nav-link" data-tab="myorders" onclick="showTab('myorders',this)" id="nav-myorders" style="display:none;">📦 My Orders</a>
-                <a href="#" class="nav-link" data-tab="track" onclick="showTab('track',this)">📋 Track</a>
-                <a href="#" class="nav-link" data-tab="auth" onclick="showTab('auth',this)" id="nav-auth">👤 Login</a>
+                <a href="#" class="nav-link" data-tab="auth" onclick="showTab('auth',this)" id="nav-auth">👤 Login / Sign Up</a>
                 <a href="#" class="nav-link" data-tab="profile" onclick="showTab('profile',this)" id="nav-profile" style="display:none;">👤 <span id="nav-username">Account</span></a>
             </div>
             <button class="hamburger" onclick="toggleMobile()">
@@ -79,7 +78,7 @@
             </div>
         </section>
 
-        <!-- ===== CART TAB ===== -->
+        <!-- ===== CART TAB  ===== -->
         <section id="tab-cart" class="page-tab">
             <div class="container">
                 <h2 class="sec-title">Your Cart & Checkout</h2>
@@ -91,6 +90,15 @@
                     <button class="btn btn-primary" onclick="showTab('shop')">Browse Products</button>
                 </div>
 
+                <!-- Login Wall -->
+                <div id="cart-login-wall" class="empty-box hidden">
+                    <div class="empty-ico">🔐</div>
+                    <h3>Login Required</h3>
+                    <p>Please log in or create an account to proceed with your order.</p>
+                    <button class="btn btn-primary" onclick="showTab('auth')">Login / Sign Up</button>
+                </div>
+
+                
                 <div id="cart-filled" class="cart-layout hidden">
                     <div>
                         <div id="cart-items"></div>
@@ -98,61 +106,37 @@
                     <div class="checkout-panel">
                         <h3>Checkout</h3>
 
-                        <!-- Login prompt if not logged in -->
-                        <div id="checkout-login-prompt" class="info-banner">
-                            <p>💡 <strong>Have an account?</strong> <a href="#" onclick="showTab('auth')">Log in</a> to auto-fill your details and track orders easily.</p>
-                        </div>
-
                         <div class="fg">
-                            <label>Full Name <span class="req">*</span></label>
+                            <label>Full Name</label>
                             <input type="text" id="c-name" class="fi" placeholder="Juan Dela Cruz" required>
                         </div>
                         <div class="fg">
-                            <label>Phone Number <span class="req">*</span></label>
+                            <label>Phone Number</label>
                             <input type="tel" id="c-phone" class="fi" placeholder="09XX XXX XXXX" required>
                         </div>
                         <div class="fg">
-                            <label>Delivery Address <span class="req">*</span></label>
+                            <label>Delivery Address</label>
                             <textarea id="c-address" class="fi" rows="3" placeholder="Full address including barangay, city" required></textarea>
+                            <small class="field-note">Update your default details in the 'Account' tab.</small>
                         </div>
 
                         <div class="fg">
-                            <label>Select Courier <span class="req">*</span></label>
+                            <label>Select Courier</label>
                             <div class="courier-opts">
-                                <label class="co">
-                                    <input type="radio" name="courier" value="Lalamove" checked>
-                                    <div class="co-card">
-                                        <span class="co-ico">🏍️</span>
-                                        <div><strong>Lalamove</strong><small>Same-day chilled delivery</small></div>
-                                    </div>
-                                </label>
-                                <label class="co">
-                                    <input type="radio" name="courier" value="LBC">
-                                    <div class="co-card">
-                                        <span class="co-ico">📦</span>
-                                        <div><strong>LBC</strong><small>Processed goods shipping</small></div>
-                                    </div>
-                                </label>
+                                <label class="co"><input type="radio" name="courier" value="Lalamove" checked><div class="co-card"><span class="co-ico">🏍️</span><div><strong>Lalamove</strong><small>Same-day chilled delivery</small></div></div></label>
+                                <label class="co"><input type="radio" name="courier" value="LBC"><div class="co-card"><span class="co-ico">📦</span><div><strong>LBC</strong><small>Processed goods shipping</small></div></div></label>
                             </div>
                         </div>
 
                         <div class="gcash-box">
                             <div class="gcash-top">💙 GCash Payment</div>
-                            <div class="gcash-mid">
-                                <p>Send payment to:</p>
-                                <div class="gcash-num"><strong>0917 123 4567</strong><small>Arnel D.</small></div>
-                            </div>
+                            <div class="gcash-mid"><p>Send payment to:</p><div class="gcash-num"><strong>0917 123 4567</strong><small>Arnel D.</small></div></div>
                             <div class="gcash-bot">
                                 <label>Upload Receipt Screenshot <span class="req">*</span></label>
                                 <div class="upload-zone" id="upload-zone" onclick="document.getElementById('receipt-file').click()">
                                     <input type="file" id="receipt-file" accept="image/*" onchange="onReceipt(event)" hidden>
-                                    <div id="upload-ph">
-                                        <span>📤</span><p>Click to upload</p><small>PNG, JPG up to 5MB</small>
-                                    </div>
-                                    <div id="upload-pv" class="hidden">
-                                        <img id="receipt-img" src="" alt="Receipt">
-                                        <button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation();clearReceipt()">Remove</button>
-                                    </div>
+                                    <div id="upload-ph"><span>📤</span><p>Click to upload</p><small>PNG, JPG up to 5MB</small></div>
+                                    <div id="upload-pv" class="hidden"><img id="receipt-img" src="" alt="Receipt"><button type="button" class="btn btn-ghost btn-sm" onclick="event.stopPropagation();clearReceipt()">Remove</button></div>
                                 </div>
                             </div>
                         </div>
@@ -160,130 +144,49 @@
                         <div class="summary-box">
                             <h4>Order Summary</h4>
                             <div id="summary-lines"></div>
-                            <div class="summary-total">
-                                <span>Total</span>
-                                <span id="summary-total">₱0.00</span>
-                            </div>
+                            <div class="summary-total"><span>Total</span><span id="summary-total">₱0.00</span></div>
                         </div>
 
-                        <button class="btn btn-primary btn-full btn-lg" id="btn-place" onclick="placeOrder()">
-                            Place Order
-                        </button>
+                        <button class="btn btn-primary btn-full btn-lg" id="btn-place" onclick="placeOrder()">Place Order</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== MY ORDERS TAB (Logged-in users) ===== -->
+        <!-- ===== MY ORDERS TAB ===== -->
         <section id="tab-myorders" class="page-tab">
             <div class="container">
                 <h2 class="sec-title">My Orders</h2>
                 <p class="sec-desc">View all your orders and their status.</p>
-                <div id="myorders-list">
-                    <div class="empty-box">
-                        <div class="empty-ico">📦</div>
-                        <h3>No orders yet</h3>
-                        <p>Your order history will appear here.</p>
-                        <button class="btn btn-primary" onclick="showTab('shop')">Start Shopping</button>
-                    </div>
-                </div>
+                <div id="myorders-list"><div class="empty-box"><div class="empty-ico">📦</div><h3>No orders yet</h3></div></div>
             </div>
         </section>
 
-        <!-- ===== TRACK TAB ===== -->
-        <section id="tab-track" class="page-tab">
-            <div class="container narrow">
-                <h2 class="sec-title">Track Your Order</h2>
-                <p class="sec-desc">Enter the Order ID you received after checkout.</p>
-                <div class="track-row">
-                    <input type="text" id="track-id" class="fi" placeholder="e.g. ORD-12345678">
-                    <button class="btn btn-primary" onclick="trackOrder()">Track</button>
-                </div>
-                <div id="track-result"></div>
-            </div>
-        </section>
-
-        <!-- ===== AUTH TAB (Login/Register) ===== -->
+        <!-- tinanggal na track tab my orders na kasi -->
+       
+        <!-- ===== AUTH TAB ===== -->
         <section id="tab-auth" class="page-tab">
             <div class="container narrow">
                 <div class="auth-card">
-                    <!-- Toggle between Login and Register -->
-                    <div class="auth-tabs">
-                        <button class="auth-tab-btn active" id="btn-login-tab" onclick="showAuthForm('login')">Log In</button>
-                        <button class="auth-tab-btn" id="btn-register-tab" onclick="showAuthForm('register')">Register</button>
-                    </div>
-
-                    <!-- LOGIN FORM -->
-                    <div id="form-login" class="auth-form-section">
-                        <div class="auth-header">
-                            <div class="auth-icon">🥩</div>
-                            <h2>Welcome Back!</h2>
-                            <p>Log in to your MeatLogic account</p>
-                        </div>
-                        <div id="login-error" class="alert-err hidden"></div>
-                        <form onsubmit="doCustomerLogin(event)">
-                            <div class="fg">
-                                <label>Email Address</label>
-                                <input type="email" id="login-email" class="fi" placeholder="you@example.com" required>
-                            </div>
-                            <div class="fg">
-                                <label>Password</label>
-                                <input type="password" id="login-pass" class="fi" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full btn-lg">Log In</button>
+                    <div id="auth-view-initial">
+                        <div class="auth-header"><div class="auth-icon">📧</div><h2>Login or Sign Up</h2><p>Enter your email to receive a secure sign-in link.</p></div>
+                        <div id="auth-error" class="alert-err hidden"></div>
+                        <form onsubmit="sendEmailLink(event)">
+                            <div class="fg"><label>Email Address</label><input type="email" id="auth-email" class="fi" placeholder="you@example.com" required></div>
+                            <button type="submit" id="btn-send-link" class="btn btn-primary btn-full btn-lg">Send Sign-in Link</button>
                         </form>
-                        <p class="auth-switch">Don't have an account? <a href="#" onclick="showAuthForm('register')">Register here</a></p>
+                        <div class="or-divider"><span>OR</span></div>
+                        <button class="btn-google" onclick="signInWithGoogle()"><svg viewBox="0 0 48 48" width="24px" height="24px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.42-4.55H24v8.51h12.8c-.57 2.89-2.2 5.36-4.78 7.02l7.58 5.86C43.97 37.63 46.98 31.63 46.98 24.55z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59L2.56 13.22C.95 16.32 0 20.04 0 24s.95 7.68 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.58-5.86c-2.15 1.45-4.92 2.3-8.31 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg> Sign in with Google</button>
                     </div>
-
-                    <!-- REGISTER FORM -->
-                    <div id="form-register" class="auth-form-section hidden">
-                        <div class="auth-header">
-                            <div class="auth-icon">🥩</div>
-                            <h2>Create Account</h2>
-                            <p>Sign up to order and track your meat deliveries</p>
-                        </div>
-                        <div id="register-error" class="alert-err hidden"></div>
-                        <div id="register-success" class="alert-suc hidden"></div>
-                        <form onsubmit="doCustomerRegister(event)">
-                            <div class="fg-row">
-                                <div class="fg">
-                                    <label>First Name <span class="req">*</span></label>
-                                    <input type="text" id="reg-fname" class="fi" placeholder="Juan" required>
-                                </div>
-                                <div class="fg">
-                                    <label>Last Name <span class="req">*</span></label>
-                                    <input type="text" id="reg-lname" class="fi" placeholder="Dela Cruz" required>
-                                </div>
-                            </div>
-                            <div class="fg">
-                                <label>Email Address <span class="req">*</span></label>
-                                <input type="email" id="reg-email" class="fi" placeholder="you@example.com" required>
-                            </div>
-                            <div class="fg">
-                                <label>Phone Number <span class="req">*</span></label>
-                                <input type="tel" id="reg-phone" class="fi" placeholder="09XX XXX XXXX" required>
-                            </div>
-                            <div class="fg">
-                                <label>Delivery Address <span class="req">*</span></label>
-                                <textarea id="reg-address" class="fi" rows="2" placeholder="Full address including barangay, city" required></textarea>
-                            </div>
-                            <div class="fg">
-                                <label>Password <span class="req">*</span></label>
-                                <input type="password" id="reg-pass" class="fi" placeholder="Min. 6 characters" required minlength="6">
-                            </div>
-                            <div class="fg">
-                                <label>Confirm Password <span class="req">*</span></label>
-                                <input type="password" id="reg-pass2" class="fi" placeholder="Re-enter password" required minlength="6">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full btn-lg">Create Account</button>
-                        </form>
-                        <p class="auth-switch">Already have an account? <a href="#" onclick="showAuthForm('login')">Log in here</a></p>
+                    <div id="auth-view-sent" class="auth-form-section hidden">
+                        <div class="auth-header"><div class="auth-icon">✅</div><h2>Check Your Email!</h2><p>We've sent a sign-in link to <strong id="sent-email-display"></strong>. Click the link to continue.</p></div>
+                        <button class="btn btn-ghost" onclick="showAuthForm('initial')">Use a different email</button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== PROFILE TAB (Logged-in user) ===== -->
+        <!-- ===== PROFILE TAB ===== -->
         <section id="tab-profile" class="page-tab">
             <div class="container narrow">
                 <div class="profile-card">
@@ -292,63 +195,36 @@
                         <h2 id="profile-fullname">Juan Dela Cruz</h2>
                         <p id="profile-email-display">juan@email.com</p>
                     </div>
-
                     <div class="profile-section">
-                        <h3>📍 Saved Delivery Address</h3>
-                        <p class="sec-desc">Update your default address so you don't have to type it every time.</p>
-                        <div class="fg">
-                            <label>Full Name</label>
-                            <input type="text" id="prof-name" class="fi" placeholder="Your full name">
-                        </div>
-                        <div class="fg">
-                            <label>Phone Number</label>
-                            <input type="tel" id="prof-phone" class="fi" placeholder="09XX XXX XXXX">
-                        </div>
-                        <div class="fg">
-                            <label>Delivery Address</label>
-                            <textarea id="prof-address" class="fi" rows="3" placeholder="Full delivery address"></textarea>
-                        </div>
-                        <button class="btn btn-primary" onclick="saveProfile()">💾 Save Address</button>
+                        <h3>📍 My Details</h3>
+                        <p class="sec-desc">Update your details. This will be used for your next checkout.</p>
+                        <div class="fg"><label>Full Name</label><input type="text" id="prof-name" class="fi" placeholder="Your full name"></div>
+                        <div class="fg"><label>Phone Number</label><input type="tel" id="prof-phone" class="fi" placeholder="09XX XXX XXXX"></div>
+                        <div class="fg"><label>Delivery Address</label><textarea id="prof-address" class="fi" rows="3" placeholder="Full delivery address"></textarea></div>
+                        <button class="btn btn-primary" onclick="saveProfile()">💾 Save Details</button>
                     </div>
-
                     <div class="profile-section">
                         <h3>🔑 Account Actions</h3>
-                        <div class="profile-actions">
-                            <button class="btn btn-ghost btn-full" onclick="showTab('myorders')">📦 View My Orders</button>
-                            <button class="btn btn-ghost btn-full" style="color:var(--red-500);" onclick="doCustomerLogout()">🚪 Log Out</button>
-                        </div>
+                        <div class="profile-actions"><button class="btn btn-ghost btn-full" onclick="showTab('myorders')">📦 View My Orders</button><button class="btn btn-ghost btn-full" style="color:var(--red-500);" onclick="doCustomerLogout()">🚪 Log Out</button></div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 MeatLogic — Arnel's Karne atbp. All rights reserved.</p>
-        <a href="admin.html" class="admin-gate">🔒 Admin Access</a>
-    </footer>
-
-    <!-- Toast -->
+    <!-- Footer, Modals, etc. -->
+    <footer class="footer"><p>© 2025 MeatLogic — Arnel's Karne atbp.</p><a href="admin.html" class="admin-gate">🔒 Admin Access</a></footer>
     <div id="toast" class="toast hidden"><span id="toast-msg"></span></div>
-
-    <!-- Success Modal -->
     <div id="modal-success" class="modal hidden">
         <div class="modal-bg" onclick="closeSuccess()"></div>
         <div class="modal-box success-modal">
             <div class="suc-ico">✅</div>
             <h2>Order Placed!</h2>
-            <p>Save your Order ID below. You can use it to track your order status.</p>
+            <p>You can view your order status in the "My Orders" tab.</p>
             <div class="oid-box" id="oid-box"></div>
-            <p class="oid-note">📋 Tip: Screenshot this or write it down!</p>
-            <div class="suc-btns">
-                <button class="btn btn-primary" onclick="closeSuccess(); showTab('myorders');" id="suc-btn-orders" style="display:none;">View My Orders</button>
-                <button class="btn btn-primary" onclick="closeSuccess();" id="suc-btn-track">Done</button>
-            </div>
+            <div class="suc-btns"><button class="btn btn-primary" onclick="closeSuccess(); showTab('myorders');">View My Orders</button></div>
         </div>
     </div>
-
-    <!-- Cancel Confirm Modal -->
     <div id="modal-cancel" class="modal hidden">
         <div class="modal-bg" onclick="closeCancelModal()"></div>
         <div class="modal-box">
@@ -363,9 +239,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK  -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="js/firebase-config.js"></script>
     <script src="js/customer.js"></script>
 </body>
