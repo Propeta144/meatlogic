@@ -666,3 +666,64 @@ textarea.fi { resize:vertical; }
     .fg-row { grid-template-columns:1fr; }
     .auth-card { margin:0 -8px; }
 }
+
+/* ================================
+   v4 AUTH & GOOGLE BUTTON STYLES
+   ================================ */
+.or-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--gray-400);
+    margin: 24px 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--gray-200);
+}
+.or-divider:not(:empty)::before {
+    margin-right: .5em;
+}
+.or-divider:not(:empty)::after {
+    margin-left: .5em;
+}
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all .2s;
+    gap: 12px;
+}
+.btn-google:hover {
+    border-color: var(--gray-400);
+    background: var(--gray-50);
+}
+.alert-suc {
+    padding:10px 14px; border-radius:var(--radius); font-size:.85rem; font-weight:500;
+    background:#f0fdf4; color:var(--green-600); border:1px solid #bbf7d0; margin-bottom:14px;
+}
+
+.field-note {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 4px;
+    display: block;
+}
+
+/* Remove Track from navbar */
+a[data-tab="track"] {
+    display: none !important;
+}
