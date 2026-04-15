@@ -285,6 +285,8 @@ textarea.fi { resize:vertical; }
 .footer {
     background:var(--gray-900); color:var(--gray-400); padding:24px;
     display:flex; justify-content:space-between; align-items:center; font-size:.85rem;
+    position: relative;
+    top: 251px;
 }
 .admin-gate {
     color:var(--gray-500); font-size:.78rem; opacity:.6; transition:all .2s;
