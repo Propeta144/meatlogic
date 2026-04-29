@@ -19,32 +19,46 @@
             </div>
             <div id="login-err" class="alert-err hidden"></div>
             <form onsubmit="doLogin(event)">
-                <div class="fg"><label>Email</label><input type="email" id="a-email" class="fi" required placeholder="admin@meatlogic.com"></div>
-                <div class="fg"><label>Password</label><input type="password" id="a-pass" class="fi" required placeholder="••••••••"></div>
+                <div class="fg">
+                    <label>Email</label>
+                    <input type="email" id="a-email" class="fi" required placeholder="admin@meatlogic.com">
+                </div>
+                <div class="fg">
+                    <label>Password</label>
+                    <input type="password" id="a-pass" class="fi" required placeholder="••••••••">
+                </div>
                 <button type="submit" class="btn btn-primary btn-full">Log In</button>
             </form>
             <a href="index.html" class="back-shop">← Back to Shop</a>
             <div class="demo-box">
                 <small>Demo Credentials</small>
-                <button onclick="document.getElementById('a-email').value='admin@meatlogic.com';document.getElementById('a-pass').value='admin123';" class="demo-fill">Auto-fill Admin</button>
+                <button onclick="document.getElementById('a-email').value='admin@meatlogic.com';document.getElementById('a-pass').value='admin123';" class="demo-fill">
+                    Auto-fill Admin
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- ===== DASHBOARD ===== -->
+    <!-- ADMIN DASHBOARD -->
     <div id="admin-app" class="admin-app hidden">
         <div class="mob-overlay" id="mob-overlay" onclick="closeSB()"></div>
 
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sb-head">
                 <span class="brand-icon-sm">🥩</span>
-                <div><span class="brand-name">MeatLogic</span><span class="brand-sub">Admin Panel</span></div>
+                <div>
+                    <span class="brand-name">MeatLogic</span>
+                    <span class="brand-sub">Admin Panel</span>
+                </div>
                 <button class="sb-close" onclick="closeSB()">✕</button>
             </div>
             <nav class="sb-nav">
                 <a href="#" class="sb-link active" onclick="aTab('dashboard',this)">📊 Dashboard</a>
                 <a href="#" class="sb-link" onclick="aTab('stock',this)">📦 Stock Management</a>
-                <a href="#" class="sb-link" onclick="aTab('orders',this)">📋 Orders <span class="sb-badge" id="pend-badge">0</span></a>
+                <a href="#" class="sb-link" onclick="aTab('orders',this)">
+                    📋 Orders <span class="sb-badge" id="pend-badge" style="display:none;">0</span>
+                </a>
                 <a href="#" class="sb-link" onclick="aTab('products',this)">🛍️ Products</a>
                 <a href="#" class="sb-link" onclick="aTab('customers',this)">👥 Customers</a>
             </nav>
@@ -54,6 +68,7 @@
             </div>
         </aside>
 
+        <!-- Main Content -->
         <main class="admin-main">
             <div class="a-topbar">
                 <button class="ham-btn" onclick="openSB()">☰</button>
@@ -61,34 +76,57 @@
                 <span id="a-date" class="a-date"></span>
             </div>
 
-            <!-- Dashboard -->
+            <!-- DASHBOARD TAB -->
             <div id="at-dashboard" class="a-tab active">
                 <div class="stats-row">
-                    <div class="st-card"><div class="st-ico bg-red">📋</div><div><small>Today's Orders</small><strong id="s-orders">0</strong></div></div>
-                    <div class="st-card"><div class="st-ico bg-orange">⏳</div><div><small>Pending</small><strong id="s-pending">0</strong></div></div>
-                    <div class="st-card"><div class="st-ico bg-green">💰</div><div><small>Revenue</small><strong id="s-revenue">₱0</strong></div></div>
-                    <div class="st-card"><div class="st-ico bg-blue">👥</div><div><small>Registered Users</small><strong id="s-users">0</strong></div></div>
+                    <div class="st-card">
+                        <div class="st-ico bg-red">📋</div>
+                        <div><small>Today's Orders</small><strong id="s-orders">0</strong></div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-ico bg-orange">⏳</div>
+                        <div><small>Pending</small><strong id="s-pending">0</strong></div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-ico bg-green">💰</div>
+                        <div><small>Revenue Today</small><strong id="s-revenue">₱0</strong></div>
+                    </div>
+                    <div class="st-card">
+                        <div class="st-ico bg-blue">👥</div>
+                        <div><small>Registered Users</small><strong id="s-users">0</strong></div>
+                    </div>
                 </div>
                 <div class="dash-grid">
-                    <div class="d-card"><div class="d-card-head"><h3>Recent Orders</h3></div><div class="d-card-body" id="d-recent"><p class="muted">No orders yet.</p></div></div>
-                    <div class="d-card"><div class="d-card-head"><h3>Low Stock Alert</h3></div><div class="d-card-body" id="d-lowstock"><p class="muted">All stocked.</p></div></div>
+                    <div class="d-card">
+                        <div class="d-card-head"><h3>Recent Orders</h3></div>
+                        <div class="d-card-body" id="d-recent"><p class="muted">No orders yet.</p></div>
+                    </div>
+                    <div class="d-card">
+                        <div class="d-card-head"><h3>Low Stock Alert</h3></div>
+                        <div class="d-card-body" id="d-lowstock"><p class="muted">All stocked.</p></div>
+                    </div>
                 </div>
-                <div class="init-section" id="init-section">
-                    <p>First time? Load sample products:</p>
+                <div class="init-section" id="init-section" style="display:none;">
+                    <p>First time? Load sample products into the database:</p>
                     <button class="btn btn-primary" onclick="initProducts()">🚀 Load Default Products</button>
                 </div>
             </div>
 
-            <!-- Stock -->
+            <!-- STOCK TAB -->
             <div id="at-stock" class="a-tab">
                 <div class="tab-head">
-                    <div><h2>Daily Stock Allocation</h2><p>Set online-only stock for each product every morning.</p></div>
+                    <div>
+                        <h2>Daily Stock Allocation</h2>
+                        <p>Set the online-only stock for each product every morning.</p>
+                    </div>
                     <button class="btn btn-primary" onclick="saveStock()">💾 Save All Changes</button>
                 </div>
-                <div class="stock-grid" id="stock-grid"><p class="muted">Loading...</p></div>
+                <div class="stock-grid" id="stock-grid">
+                    <p class="muted">Loading...</p>
+                </div>
             </div>
 
-            <!-- Orders -->
+            <!-- ORDERS TAB -->
             <div id="at-orders" class="a-tab">
                 <div class="tab-head">
                     <h2>Order Management</h2>
@@ -99,12 +137,13 @@
                         <button class="fbtn" onclick="fOrd('Out for Delivery',this)">Delivering</button>
                         <button class="fbtn" onclick="fOrd('Completed',this)">Completed</button>
                         <button class="fbtn" onclick="fOrd('Cancelled',this)">Cancelled</button>
+                        <button class="fbtn" onclick="fOrd('Rejected',this)">Rejected</button>
                     </div>
                 </div>
                 <div id="orders-list"><p class="muted">Loading...</p></div>
             </div>
 
-            <!-- Products -->
+            <!-- PRODUCTS TAB -->
             <div id="at-products" class="a-tab">
                 <div class="tab-head">
                     <h2>Product Catalog</h2>
@@ -112,19 +151,41 @@
                 </div>
                 <div class="table-wrap">
                     <table class="dtable">
-                        <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Unit</th><th>Stock</th><th>Actions</th></tr></thead>
-                        <tbody id="prod-tbody"><tr><td colspan="6" class="muted">Loading...</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Unit</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prod-tbody">
+                            <tr><td colspan="7" class="muted">Loading...</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Customers -->
+            <!-- CUSTOMERS TAB -->
             <div id="at-customers" class="a-tab">
                 <div class="tab-head"><h2>Registered Customers</h2></div>
                 <div class="table-wrap">
                     <table class="dtable">
-                        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Joined</th></tr></thead>
-                        <tbody id="cust-tbody"><tr><td colspan="5" class="muted">Loading...</td></tr></tbody>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cust-tbody">
+                            <tr><td colspan="5" class="muted">Loading...</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -134,93 +195,100 @@
     <!-- Toast -->
     <div id="toast" class="toast hidden"><span id="toast-msg"></span></div>
 
-    <!-- Product Modal -->
+    <!-- PRODUCT MODAL -->
     <div id="prod-modal" class="modal hidden">
-        <!-- Product Modal — Base64 Image Upload (No Firebase Storage) -->
-<div id="prod-modal" class="modal hidden">
-    <div class="modal-bg" onclick="closeProdModal()"></div>
-    <div class="modal-box">
-        <div class="mb-head">
-            <h2 id="pm-title">Add Product</h2>
-            <button class="mb-close" onclick="closeProdModal()">✕</button>
+        <div class="modal-bg" onclick="closeProdModal()"></div>
+        <div class="modal-box" style="max-width:540px;">
+            <div class="mb-head">
+                <h2 id="pm-title">Add Product</h2>
+                <button class="mb-close" onclick="closeProdModal()">✕</button>
+            </div>
+            <div style="padding:0 24px 24px; max-height:75vh; overflow-y:auto;">
+                <form id="prod-form" onsubmit="saveProd(event)">
+                    <input type="hidden" id="pm-id">
+                    <input type="hidden" id="pm-existing-image">
+
+                    <!-- IMAGE UPLOAD -->
+                    <div class="fg">
+                        <label>Product Image</label>
+                        <div class="img-upload-area" id="img-upload-area"
+                            onclick="document.getElementById('pm-image-file').click()">
+                            <input type="file" id="pm-image-file" accept="image/*"
+                                onchange="previewProductImage(event)" hidden>
+                            <div id="img-upload-placeholder">
+                                <span style="font-size:2rem;">🖼️</span>
+                                <p>Click to upload product image</p>
+                                <small>JPG or PNG — max 2MB — Best: 500x500px</small>
+                            </div>
+                            <div id="img-upload-preview" class="hidden" style="padding:16px;text-align:center;">
+                                <img id="img-preview-el" src="" alt="Preview"
+                                    style="max-height:160px;border-radius:8px;max-width:100%;display:block;margin:0 auto 10px;">
+                                <button type="button" class="btn btn-ghost btn-sm"
+                                    onclick="event.stopPropagation();removeProductImage()">
+                                    ✕ Remove Image
+                                </button>
+                            </div>
+                        </div>
+                        <small style="color:var(--gray-400);margin-top:4px;display:block;">
+                            💡 If no image, emoji icon will be shown instead.
+                        </small>
+                    </div>
+
+                    <div class="fg">
+                        <label>Product Name <span class="req">*</span></label>
+                        <input type="text" id="pm-name" class="fi" required placeholder="e.g. Pork Belly">
+                    </div>
+                    <div class="fg">
+                        <label>Category <span class="req">*</span></label>
+                        <select id="pm-cat" class="fi" required>
+                            <option value="">Select category</option>
+                            <option value="beef">🥩 Beef</option>
+                            <option value="pork">🍖 Pork</option>
+                            <option value="chicken">🍗 Chicken</option>
+                            <option value="processed">🌭 Processed</option>
+                        </select>
+                    </div>
+                    <div class="fg-row">
+                        <div class="fg">
+                            <label>Price (₱) <span class="req">*</span></label>
+                            <input type="number" id="pm-price" class="fi" step="0.01" min="0" required>
+                        </div>
+                        <div class="fg">
+                            <label>Unit <span class="req">*</span></label>
+                            <input type="text" id="pm-unit" class="fi" required placeholder="per kg">
+                        </div>
+                    </div>
+                    <div class="fg">
+                        <label>Emoji Icon (Fallback)</label>
+                        <input type="text" id="pm-emoji" class="fi" maxlength="2" placeholder="🥩">
+                    </div>
+                    <div class="mb-actions">
+                        <button type="button" class="btn btn-ghost" onclick="closeProdModal()">Cancel</button>
+                        <button type="submit" id="pm-save-btn" class="btn btn-primary">Save Product</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form id="prod-form" onsubmit="saveProd(event)" style="padding:0 24px 24px;">
-            <input type="hidden" id="pm-id">
-            <input type="hidden" id="pm-existing-image">
-
-            <div class="fg">
-                <label>Product Image</label>
-                <div class="img-upload-area" id="img-upload-area"
-                    onclick="document.getElementById('pm-image-file').click()">
-                    <input type="file" id="pm-image-file" accept="image/*"
-                        onchange="previewProductImage(event)" hidden>
-                    <div id="img-upload-placeholder">
-                        <span style="font-size:2rem;">🖼️</span>
-                        <p>Click to upload product image</p>
-                        <small>JPG or PNG — max 2MB — Recommended: 500x500px</small>
-                    </div>
-                    <div id="img-upload-preview" class="hidden">
-                        <img id="img-preview-el" src="" alt="Preview"
-                            style="max-height:180px; border-radius:8px; max-width:100%;">
-                        <button type="button" class="btn btn-ghost btn-sm"
-                            onclick="event.stopPropagation(); removeProductImage()">
-                            ✕ Remove Image
-                        </button>
-                    </div>
-                </div>
-                <small style="color:var(--gray-400); margin-top:4px; display:block;">
-                    💡 If no image is uploaded, the emoji icon will be shown.
-                </small>
-            </div>
-
-            <div class="fg">
-                <label>Product Name <span class="req">*</span></label>
-                <input type="text" id="pm-name" class="fi" required placeholder="e.g. Pork Belly">
-            </div>
-            <div class="fg">
-                <label>Category <span class="req">*</span></label>
-                <select id="pm-cat" class="fi" required>
-                    <option value="">Select category</option>
-                    <option value="beef">🥩 Beef</option>
-                    <option value="pork">🍖 Pork</option>
-                    <option value="chicken">🍗 Chicken</option>
-                    <option value="processed">🌭 Processed</option>
-                </select>
-            </div>
-            <div class="fg-row">
-                <div class="fg">
-                    <label>Price (₱) <span class="req">*</span></label>
-                    <input type="number" id="pm-price" class="fi" step="0.01" required min="0">
-                </div>
-                <div class="fg">
-                    <label>Unit <span class="req">*</span></label>
-                    <input type="text" id="pm-unit" class="fi" required placeholder="per kg">
-                </div>
-            </div>
-            <div class="fg">
-                <label>Emoji Icon (Fallback if no image)</label>
-                <input type="text" id="pm-emoji" class="fi" maxlength="2" placeholder="🥩">
-            </div>
-            <div class="mb-actions">
-                <button type="button" class="btn btn-ghost" onclick="closeProdModal()">Cancel</button>
-                <button type="submit" id="pm-save-btn" class="btn btn-primary">Save Product</button>
-            </div>
-        </form>
     </div>
-</div>
-   
 
-    <!-- Receipt Modal -->
+    <!-- RECEIPT MODAL -->
     <div id="rcpt-modal" class="modal hidden">
         <div class="modal-bg" onclick="closeRcpt()"></div>
-        <div class="modal-box"><div class="mb-head"><h2>GCash Receipt</h2><button class="mb-close" onclick="closeRcpt()">✕</button></div>
-            <div style="text-align:center;padding:20px;"><img id="rcpt-view" src="" alt="Receipt" style="max-width:100%;border-radius:8px;"></div>
+        <div class="modal-box">
+            <div class="mb-head">
+                <h2>GCash Receipt</h2>
+                <button class="mb-close" onclick="closeRcpt()">✕</button>
+            </div>
+            <div style="text-align:center;padding:20px;">
+                <img id="rcpt-view" src="" alt="Receipt" style="max-width:100%;border-radius:8px;">
+            </div>
         </div>
     </div>
 
-    <!-- Firebase Databse -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="js/firebase-config.js"></script>
     <script src="js/admin.js"></script>
 </body>
