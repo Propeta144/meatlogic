@@ -777,3 +777,176 @@ a[data-tab="track"] {
     height: 100%;
     object-fit: cover;
 }
+
+/* ================================
+   FOOTER FIX — Sa baba lang talaga
+   ================================ */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-main {
+    flex: 1;
+    padding-top: 64px;
+}
+
+.footer {
+    /* Remove any position:fixed or position:sticky if may ganon */
+    position: relative !important;
+    margin-top: auto;
+    background: var(--gray-900);
+    color: var(--gray-400);
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .85rem;
+    flex-shrink: 0;
+}
+
+/* ================================
+   AUTH FORM STYLES
+   ================================ */
+.auth-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-100);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.auth-tab-btn {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: .92rem;
+    cursor: pointer;
+    color: var(--text2);
+    transition: all .2s;
+    position: relative;
+}
+
+.auth-tab-btn.active {
+    color: var(--primary);
+}
+
+.auth-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient);
+}
+
+.auth-form-section {
+    padding: 28px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.auth-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+.auth-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+}
+
+.auth-header p {
+    color: var(--text2);
+    font-size: .9rem;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 18px;
+    font-size: .88rem;
+    color: var(--text2);
+}
+
+.auth-switch a {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.alert-suc {
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: .85rem;
+    font-weight: 500;
+    background: #f0fdf4;
+    color: var(--green-600);
+    border: 1px solid #bbf7d0;
+    margin-bottom: 14px;
+}
+
+/* OR Divider */
+.or-divider {
+    display: flex;
+    align-items: center;
+    color: var(--gray-400);
+    margin: 20px 0;
+    font-size: .8rem;
+    font-weight: 600;
+}
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--gray-200);
+}
+.or-divider:not(:empty)::before { margin-right: .5em; }
+.or-divider:not(:empty)::after { margin-left: .5em; }
+
+/* Google Button */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all .2s;
+    gap: 12px;
+}
+.btn-google:hover {
+    border-color: var(--gray-400);
+    background: var(--gray-50);
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        padding: 20px;
+    }
+}
