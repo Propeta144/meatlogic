@@ -16,7 +16,11 @@ var cancelTarget = null;
 function showTab(tab, el) {
     document.querySelectorAll(".page-tab").forEach(function(t) { t.classList.remove("active"); });
     var target = document.getElementById("tab-" + tab);
-    if (target) target.classList.add("active");
+    if (target) {
+    setTimeout(function () {
+        target.classList.add("active");
+    }, 20);
+}
     document.querySelectorAll(".nav-link").forEach(function(n) { n.classList.remove("active"); });
     if (el) {
         el.classList.add("active");
