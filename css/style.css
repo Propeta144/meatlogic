@@ -117,8 +117,22 @@ textarea.fi { resize:vertical; }
    CONTAINERS & SECTIONS
    ==================== */
 .page-main { padding-top:64px; }
-.page-tab { display:none; }
-.page-tab.active { display:block; }
+.page-tab {
+    opacity:0;
+    transform:translateY(20px);
+    visibility:hidden;
+    position:absolute;
+    width:100%;
+    pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+}
+.page-tab.active { 
+opacity:1;
+    transform:translateY(0);
+    visibility:visible;
+    position:relative;
+    pointer-events:auto;    
+}
 .container { max-width:1200px; margin:0 auto; padding:40px 24px 60px; }
 .container.narrow { max-width:600px; }
 .sec-title { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:20px; text-align:center; }
