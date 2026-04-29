@@ -118,15 +118,21 @@ textarea.fi { resize:vertical; }
    ==================== */
 .page-main { padding-top:64px; }
 .page-tab {
-    display:none;
     opacity:0;
     transform:translateY(20px);
-    transition:opacity .35s ease, transform .35s ease;
+    max-height:0;
+    overflow:hidden;
+    pointer-events:none;
+    transition:
+        opacity .35s ease,
+        transform .35s ease,
+        max-height .35s ease;
 }
 .page-tab.active { 
-    display:block;
     opacity:1;
-    transform:translateY(0);   
+    transform:translateY(0);
+    max-height:5000px;
+    pointer-events:auto;  
 }
 .container { max-width:1200px; margin:0 auto; padding:40px 24px 60px; }
 .container.narrow { max-width:600px; }
