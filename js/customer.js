@@ -144,7 +144,12 @@ function renderProducts() {
         var stk = p.onlineStock || 0, out = stk <= 0, low = stk > 0 && stk <= 5;
         var sClass = out ? "stk-out" : low ? "stk-low" : "stk-ok", sText = out ? "Sold Out" : stk + " left";
         var inCart = cart.find(c => c.id === id), qty = inCart ? inCart.qty : 0;
-        return `<div class="p-card"><div class="p-card-top">${p.emoji || "🥩"}</div><div class="p-card-body"><span class="p-cat-tag">${p.category}</span><h3>${p.name}</h3><p class="p-unit">${p.unit}</p><div class="p-foot"><span class="p-price">${formatCurrency(p.price)}</span><span class="p-stock ${sClass}">${sText}</span></div></div><div class="p-actions">${out ? `<button class="btn btn-ghost btn-full btn-sm" disabled>Sold Out</button>` : `<div class="qty-row"><button class="qty-btn" onclick="chgQty('${id}',-1)">−</button><span class="qty-val" id="q-${id}">${qty}</span><button class="qty-btn" onclick="chgQty('${id}',1)">+</button></div><button class="btn btn-primary btn-full btn-sm" onclick="addCart('${id}')">${qty > 0 ? "Update Cart" : "Add to Cart"}</button>`}</div></div>`;
+        return `<div class="p-card"><div class="p-card-top" style="padding:0;">
+    ${p.image
+        ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">`
+        : (p.emoji || "🥩")
+    }
+</div><div class="p-card-body"><span class="p-cat-tag">${p.category}</span><h3>${p.name}</h3><p class="p-unit">${p.unit}</p><div class="p-foot"><span class="p-price">${formatCurrency(p.price)}</span><span class="p-stock ${sClass}">${sText}</span></div></div><div class="p-actions">${out ? `<button class="btn btn-ghost btn-full btn-sm" disabled>Sold Out</button>` : `<div class="qty-row"><button class="qty-btn" onclick="chgQty('${id}',-1)">−</button><span class="qty-val" id="q-${id}">${qty}</span><button class="qty-btn" onclick="chgQty('${id}',1)">+</button></div><button class="btn btn-primary btn-full btn-sm" onclick="addCart('${id}')">${qty > 0 ? "Update Cart" : "Add to Cart"}</button>`}</div></div>`;
     }).join("");
 }
 function filterCat(cat, btn) { currentCat = cat; document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); renderProducts(); }
