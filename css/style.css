@@ -124,9 +124,9 @@ textarea.fi { resize:vertical; }
     overflow:hidden;
     pointer-events:none;
     transition:
-        opacity .20s ease,
-        transform .20s ease,
-        max-height .20s ease;
+        opacity .28s ease,
+        transform .28s ease,
+        max-height .28s ease;
 }
 .page-tab.active { 
     opacity:1;
