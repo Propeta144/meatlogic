@@ -13,21 +13,27 @@ var cancelTarget = null;
 /* ==========================================
    NAVIGATION
    ========================================== */
-function showTab(tab, el) {
-    document.querySelectorAll(".page-tab").forEach(function(t) { t.classList.remove("active"); });
-    var target = document.getElementById("tab-" + tab);
-    if (target) target.classList.add("active");
-    document.querySelectorAll(".nav-link").forEach(function(n) { n.classList.remove("active"); });
-    if (el) {
-        el.classList.add("active");
-    } else {
-        document.querySelectorAll(".nav-link[data-tab='" + tab + "']").forEach(function(n) { n.classList.add("active"); });
+function showTab(tabName, el = null) {
+    const tabs = document.querySelectorAll('.page-tab');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // remove active nav
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // hide all tabs
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    // wait konti para smooth transition
+    setTimeout(() => {
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+    }, 100);
+
+    // set active nav
+    if(el){
+        el.classList.add('active');
     }
-    if (tab === "cart") renderCart();
-    if (tab === "myorders") loadMyOrders();
-    if (tab === "profile") loadProfile();
-    closeMobile();
-    window.scrollTo(0, 0);
 }
 
 function toggleMobile() { document.getElementById("nav-links").classList.toggle("open"); }
