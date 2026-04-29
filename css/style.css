@@ -732,3 +732,48 @@ textarea.fi { resize:vertical; }
 a[data-tab="track"] {
     display: none !important;
 }
+
+/* ================================
+   IMAGE UPLOAD STYLES (Base64)
+   ================================ */
+.img-upload-area {
+    border: 2px dashed var(--gray-300);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all .2s;
+    overflow: hidden;
+    background: var(--gray-50);
+    min-height: 100px;
+}
+.img-upload-area:hover {
+    border-color: var(--primary);
+    background: var(--red-50);
+}
+#img-upload-placeholder {
+    padding: 24px;
+    text-align: center;
+    color: var(--text2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+#img-upload-placeholder p {
+    font-weight: 600;
+    font-size: .88rem;
+    margin: 0;
+}
+#img-upload-placeholder small { font-size: .76rem; }
+#img-upload-preview {
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.p-card-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
