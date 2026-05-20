@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-brand" onclick="showTab('home')" style="cursor:pointer;">
@@ -35,10 +34,8 @@
         </div>
     </nav>
 
-    <!-- MAIN CONTENT -->
     <main class="page-main">
 
-        <!-- HOME TAB -->
         <section id="tab-home" class="page-tab active">
             <div class="hero">
                 <div class="hero-shapes"><div class="hs hs1"></div><div class="hs hs2"></div></div>
@@ -63,7 +60,6 @@
             </div>
         </section>
 
-        <!-- SHOP TAB -->
         <section id="tab-shop" class="page-tab">
             <div class="container">
                 <h2 class="sec-title">Today's Fresh Selection</h2>
@@ -79,7 +75,6 @@
             </div>
         </section>
 
-        <!-- CART TAB -->
         <section id="tab-cart" class="page-tab">
             <div class="container">
                 <h2 class="sec-title">Your Cart & Checkout</h2>
@@ -169,18 +164,15 @@
             </div>
         </section>
 
-        <!-- AUTH TAB — UPDATED (Email + Password + Google) -->
         <section id="tab-auth" class="page-tab">
             <div class="container narrow">
                 <div class="auth-card">
 
-                    <!-- TAB SWITCHER -->
                     <div class="auth-tabs">
                         <button class="auth-tab-btn active" id="btn-login-tab" onclick="switchAuthTab('login')">Log In</button>
                         <button class="auth-tab-btn" id="btn-reg-tab" onclick="switchAuthTab('register')">Register</button>
                     </div>
 
-                    <!-- LOGIN FORM -->
                     <div id="auth-login-form" class="auth-form-section">
                         <div class="auth-header">
                             <div class="auth-icon">👋</div>
@@ -213,7 +205,6 @@
                         <p class="auth-switch">No account yet? <a href="#" onclick="switchAuthTab('register')">Register here</a></p>
                     </div>
 
-                    <!-- REGISTER FORM -->
                     <div id="auth-register-form" class="auth-form-section hidden">
                         <div class="auth-header">
                             <div class="auth-icon">🥩</div>
@@ -279,7 +270,6 @@
             </div>
         </section>
 
-        <!-- PROFILE TAB -->
         <section id="tab-profile" class="page-tab">
             <div class="container narrow">
                 <div class="profile-card">
@@ -309,16 +299,13 @@
 
     </main>
 
-    <!-- FOOTER — Fixed sa baba lang -->
     <footer class="footer">
-        <p>© 2025 MeatLogic — Arnel's Karne atbp. All rights reserved.</p>
+        <p>© 2026 MeatLogic — Arnel's Karne atbp. All rights reserved.</p>
         <a href="admin.html" class="admin-gate">🔒 Admin Access</a>
     </footer>
 
-    <!-- Toast -->
     <div id="toast" class="toast hidden"><span id="toast-msg"></span></div>
 
-    <!-- Success Modal -->
     <div id="modal-success" class="modal hidden">
         <div class="modal-bg" onclick="closeSuccess()"></div>
         <div class="modal-box success-modal">
@@ -333,7 +320,6 @@
         </div>
     </div>
 
-    <!-- Cancel Modal -->
     <div id="modal-cancel" class="modal hidden">
         <div class="modal-bg" onclick="closeCancelModal()"></div>
         <div class="modal-box">
@@ -348,7 +334,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
