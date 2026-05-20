@@ -3,7 +3,6 @@
 var adminProducts = {}, adminOrders = {}, adminCustomers = {}, orderFilter = "all";
 var productImageBase64 = null;
 
-/* ---- LOGIN ---- */
 function doLogin(e) {
     e.preventDefault();
     var em = document.getElementById("a-email").value.trim();
@@ -32,7 +31,7 @@ function showDashboard() {
 }
 if (sessionStorage.getItem("ml_admin") === "true") showDashboard();
 
-/* ---- SIDEBAR ---- */
+
 function openSB() {
     document.getElementById("sidebar").classList.add("open");
     document.getElementById("mob-overlay").classList.add("show");
@@ -56,7 +55,7 @@ function aTab(name, el) {
     closeSB();
 }
 
-/* ---- LOAD DATA ---- */
+
 function loadData() {
     db.ref("products").on("value", snap => {
         adminProducts = snap.val() || {};
@@ -72,7 +71,7 @@ function loadData() {
     });
 }
 
-/* ---- DASHBOARD ---- */
+
 function refreshDash() {
     var today = new Date().toDateString();
     var ordArr = Object.entries(adminOrders);
@@ -133,7 +132,7 @@ function initProducts() {
     loadDefaultProducts().then(() => showToast("Default products loaded!"));
 }
 
-/* ---- STOCK MANAGEMENT ---- */
+
 function renderStockGrid() {
     var grid = document.getElementById("stock-grid");
     var entries = Object.entries(adminProducts);
@@ -172,7 +171,7 @@ function saveStock() {
     db.ref().update(updates).then(() => showToast("Stock saved successfully!"));
 }
 
-/* ---- ORDERS ---- */
+
 function renderOrders() {
     var list = document.getElementById("orders-list");
     var entries = Object.entries(adminOrders)
@@ -296,7 +295,6 @@ function viewRcpt(id) {
 }
 function closeRcpt() { document.getElementById("rcpt-modal").classList.add("hidden"); }
 
-/* ---- PRODUCTS TABLE ---- */
 function renderProdTable() {
     var tbody = document.getElementById("prod-tbody");
     var entries = Object.entries(adminProducts);
@@ -329,15 +327,13 @@ function renderProdTable() {
     ).join("");
 }
 
-/* ============================================
-   IMAGE HANDLING — Base64 (No Firebase Storage)
-   ============================================ */
+
 
 function previewProductImage(e) {
     var file = e.target.files[0];
     if (!file) return;
 
-    // Check file size — warn if too big
+   
     var sizeKB = file.size / 1024;
     if (sizeKB > 2048) {
         showToast("Image too large! Please use an image under 2MB.");
@@ -345,7 +341,7 @@ function previewProductImage(e) {
         return;
     }
 
-    // Compress then preview
+  
     compressProductImage(file, 500, 0.75).then(base64 => {
         productImageBase64 = base64;
         document.getElementById("img-preview-el").src = base64;
@@ -364,7 +360,7 @@ function compressProductImage(file, maxSize, quality) {
             img.onload = () => {
                 var canvas = document.createElement("canvas");
                 var w = img.width, h = img.height;
-                // Resize to max dimension
+         
                 if (w > h) {
                     if (w > maxSize) { h = (maxSize / w) * h; w = maxSize; }
                 } else {
@@ -390,7 +386,6 @@ function removeProductImage() {
     document.getElementById("img-upload-preview").classList.add("hidden");
 }
 
-/* ---- PRODUCT MODAL ---- */
 function openProductModal() {
     document.getElementById("pm-title").textContent = "Add Product";
     document.getElementById("prod-form").reset();
@@ -443,7 +438,7 @@ function saveProd(e) {
     var id = document.getElementById("pm-id").value || "p" + Date.now();
     var existingImage = document.getElementById("pm-existing-image").value || "";
 
-    // Use new base64 image if uploaded, otherwise keep existing
+
     var imageToSave = productImageBase64 || existingImage;
 
     var data = {
@@ -462,7 +457,6 @@ function saveProd(e) {
             showToast("✅ Product saved successfully!");
         })
         .catch(err => {
-            // If too large for database, save without image
             if (err.message.includes("size") || err.message.includes("limit")) {
                 showToast("⚠️ Image too large for database. Saving without image. Try a smaller image.");
                 data.image = "";
@@ -485,7 +479,7 @@ function delProd(id) {
     db.ref("products/" + id).remove().then(() => showToast("Product deleted."));
 }
 
-/* ---- CUSTOMERS ---- */
+
 function renderCustomers() {
     var tbody = document.getElementById("cust-tbody");
     var entries = Object.entries(adminCustomers);
