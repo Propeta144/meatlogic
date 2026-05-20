@@ -1,7 +1,3 @@
-/* ============================================
-   MEATLOGIC v6 — Customer Logic
-   Email+Password Auth (No Magic Link)
-   ============================================ */
 
 var allProducts = {};
 var cart = JSON.parse(localStorage.getItem("ml_cart") || "[]");
@@ -10,9 +6,6 @@ var currentCat = "all";
 var currentUser = null;
 var cancelTarget = null;
 
-/* ==========================================
-   NAVIGATION
-   ========================================== */
 function showTab(tab, el) {
     document.querySelectorAll(".page-tab").forEach(function(t) { t.classList.remove("active"); });
     var target = document.getElementById("tab-" + tab);
@@ -33,16 +26,13 @@ function showTab(tab, el) {
 function toggleMobile() { document.getElementById("nav-links").classList.toggle("open"); }
 function closeMobile() { document.getElementById("nav-links").classList.remove("open"); }
 
-/* ==========================================
-   AUTH TAB SWITCHER
-   ========================================== */
 function switchAuthTab(tab) {
     var loginForm = document.getElementById("auth-login-form");
     var regForm = document.getElementById("auth-register-form");
     var loginBtn = document.getElementById("btn-login-tab");
     var regBtn = document.getElementById("btn-reg-tab");
 
-    // Clear errors
+
     document.getElementById("login-error").classList.add("hidden");
     document.getElementById("register-error").classList.add("hidden");
     document.getElementById("register-success").classList.add("hidden");
@@ -71,19 +61,15 @@ function togglePass(inputId, btn) {
     }
 }
 
-/* ==========================================
-   FIREBASE AUTH — EMAIL + PASSWORD
-   ========================================== */
 
-// Listen to auth state changes
 firebase.auth().onAuthStateChanged(function(firebaseUser) {
     if (firebaseUser) {
-        // User is logged in — fetch their profile from database
+       
         db.ref("customers/" + firebaseUser.uid).once("value").then(function(snap) {
             if (snap.exists()) {
                 setCurrentUser(firebaseUser.uid, snap.val());
             } else {
-                // New Google user — create profile
+             
                 var userData = {
                     fullName: firebaseUser.displayName || "",
                     email: firebaseUser.email || "",
@@ -103,7 +89,7 @@ firebase.auth().onAuthStateChanged(function(firebaseUser) {
     }
 });
 
-/* --- REGISTER --- */
+
 function doEmailPasswordRegister(e) {
     e.preventDefault();
     var fname = document.getElementById("reg-fname").value.trim();
@@ -143,7 +129,7 @@ function doEmailPasswordRegister(e) {
                 setCurrentUser(userId, userData);
                 sucEl.textContent = "Account created successfully! Welcome, " + fname + "!";
                 sucEl.classList.remove("hidden");
-                // Clear form
+               
                 document.getElementById("reg-fname").value = "";
                 document.getElementById("reg-lname").value = "";
                 document.getElementById("reg-email").value = "";
@@ -173,7 +159,7 @@ function doEmailPasswordRegister(e) {
         });
 }
 
-/* --- LOGIN --- */
+
 function doEmailPasswordLogin(e) {
     e.preventDefault();
     var email = document.getElementById("login-email").value.trim();
@@ -188,7 +174,6 @@ function doEmailPasswordLogin(e) {
 
     firebase.auth().signInWithEmailAndPassword(email, pass)
         .then(function() {
-            // onAuthStateChanged will handle the rest
             showToast("Logged in successfully!");
             showTab("shop");
         })
@@ -214,12 +199,11 @@ function doEmailPasswordLogin(e) {
         });
 }
 
-/* --- GOOGLE SIGN IN --- */
+
 function signInWithGoogle() {
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider)
         .then(function(result) {
-            // onAuthStateChanged will handle profile creation/loading
             showToast("Signed in with Google!");
             showTab("shop");
         })
@@ -228,7 +212,6 @@ function signInWithGoogle() {
         });
 }
 
-/* --- LOGOUT --- */
 function doCustomerLogout() {
     firebase.auth().signOut().then(function() {
         showToast("Logged out successfully.");
@@ -236,7 +219,6 @@ function doCustomerLogout() {
     });
 }
 
-/* --- SET / CLEAR USER --- */
 function setCurrentUser(id, data) {
     currentUser = {
         id: id,
@@ -275,9 +257,6 @@ function updateUIForUser() {
     }
 }
 
-/* ==========================================
-   PROFILE
-   ========================================== */
 function loadProfile() {
     if (!currentUser) { showTab("auth"); return; }
     var avatar = document.getElementById("profile-avatar");
@@ -308,9 +287,6 @@ function saveProfile() {
         });
 }
 
-/* ==========================================
-   PRODUCTS
-   ========================================== */
 db.ref("products").on("value", function(snap) {
     var data = snap.val();
     var loadEl = document.getElementById("loading");
@@ -375,9 +351,6 @@ function filterCat(cat, btn) {
     renderProducts();
 }
 
-/* ==========================================
-   CART
-   ========================================== */
 function chgQty(id, d) {
     var el = document.getElementById("q-" + id);
     if (!el) return;
@@ -455,9 +428,6 @@ function renderCart() {
     document.getElementById("summary-total").textContent = formatCurrency(total);
 }
 
-/* ==========================================
-   RECEIPT
-   ========================================== */
 function onReceipt(e) {
     var file = e.target.files[0];
     if (!file) return;
@@ -477,9 +447,6 @@ function clearReceipt() {
     document.getElementById("upload-pv").classList.add("hidden");
 }
 
-/* ==========================================
-   PLACE ORDER
-   ========================================== */
 function placeOrder() {
     if (!currentUser) { showToast("Please log in first."); showTab("auth"); return; }
     var name = document.getElementById("c-name").value.trim();
@@ -526,9 +493,6 @@ function placeOrder() {
 
 function closeSuccess() { document.getElementById("modal-success").classList.add("hidden"); }
 
-/* ==========================================
-   MY ORDERS
-   ========================================== */
 function loadMyOrders() {
     if (!currentUser) { showTab("auth"); return; }
     var container = document.getElementById("myorders-list");
@@ -555,9 +519,6 @@ function loadMyOrders() {
     });
 }
 
-/* ==========================================
-   CANCEL ORDER
-   ========================================== */
 function openCancelModal(orderId) {
     cancelTarget = orderId;
     document.getElementById("cancel-order-id").textContent = orderId;
@@ -585,15 +546,9 @@ function confirmCancelOrder() {
     });
 }
 
-/* ==========================================
-   HELPERS
-   ========================================== */
 function statusBadgeClass(s) {
     return { "Pending": "bs-pending", "Approved": "bs-approved", "Out for Delivery": "bs-delivering", "Completed": "bs-completed", "Rejected": "bs-rejected", "Cancelled": "bs-cancelled" }[s] || "bs-pending";
 }
 
-/* ==========================================
-   INIT
-   ========================================== */
 updateBadge();
 updateUIForUser();
